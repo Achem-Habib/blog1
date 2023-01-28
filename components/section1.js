@@ -1,87 +1,51 @@
-import Image from "next/image";
-import Link from "next/link";
-import Author from "./_child/author";
-// Import Swiper React components
-import SwiperCore, { Autoplay } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
-// Import Swiper styles
-import "swiper/css";
-import fetcher from "../lib/fetcher";
-import Error from "./_child/error";
-import Spinner from "./_child/spinner";
-
 export default function section1() {
-  const { data, isLoading, isError } = fetcher("api/trending");
-
-  if (isLoading) return <Spinner></Spinner>;
-  if (isError) return <Error></Error>;
-
-  SwiperCore.use([Autoplay]);
-
-  const bg = {
-    background: "url('/images/banner.png') no-repeat",
-    backgroundPosition: "right",
-  };
-
   return (
-    <section className="py-16" style={bg}>
-      <div className="container mx-auto md:px-20">
-        <h1 className="font-bold text-4xl pb-12 text-center">Trending</h1>
-
-        <Swiper
-          slidesPerView={1}
-          loop={true}
-          autoplay={{
-            delay: 2000,
-          }}
-        >
-          {data.map((value, index) => (
-            <SwiperSlide key={index}>
-              <Slide data={value}></Slide>
-            </SwiperSlide>
-          ))}
-          ...
-        </Swiper>
+    <div class="flex flex-col items-center my-6 xl:flex-row gap-x-12 xl:mb-12">
+      <div class="pt-6">
+        <h1 class="pb-6 text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+          Welcome to our blockchain technology blog!
+        </h1>
+        <h2 class="text-lg prose text-gray-600 dark:text-gray-400">
+          Here, we aim to provide you with the latest news and insights on theme
+          ever-evolving world of blockchain and cryprocurrency. Join us on our
+          journey to discover the potential of blockchain and stay up-to-date
+          with the latest trends and advancements in this exciting field
+        </h2>
       </div>
-    </section>
-  );
-}
-
-function Slide({ data }) {
-  const { id, title, category, img, published, description, author } = data;
-
-  return (
-    <div className="grid md:grid-cols-2">
-      <div className="image">
-        <Link href={`/posts/${id}`}>
-          <Image src={img || "/"} width={600} height={600} alt="slide image" />
-        </Link>
-      </div>
-      <div className="info flex justify-center flex-col">
-        <div className="cat">
-          <Link
-            className="text-orange-600 hover:text-orange-800"
-            href={`/posts/${id}`}
-          >
-            {category || "Unknown"}
-          </Link>
-          <Link
-            className="text-gray-800 hover:text-gray-600"
-            href={`/posts/${id}`}
-          >
-            - {published || "Unknown"}
-          </Link>
+      <div class="flex items-center justify-center mx-2 my-12 w-96">
+        <div class="flex items-center justify-center">
+          <div class="p-6 bg-gray-100 dark:bg-gray-800 sm:px-14 sm:py-8">
+            <div>
+              <div class="pb-1 text-lg font-semibold text-gray-800 w-72 dark:text-gray-100">
+                Stay updated, receive the latest post straight to your mailbox
+              </div>
+              <form class="flex flex-col">
+                <div>
+                  <label class="sr-only" for="email-input">
+                    Email address
+                  </label>
+                  <input
+                    autoComplete="email"
+                    class="px-4 rounded-md w-72 dark:bg-black focus:outline-none focus:ring-2 focus:border-transparent focus:ring-primary-600"
+                    id="email-input"
+                    name="email"
+                    placeholder="Enter your email"
+                    required=""
+                    type="email"
+                  />
+                </div>
+                <div class="mt-2 rounded-md shadow-sm">
+                  <button
+                    class="py-2 w-72 bg-primary-500 px-4 rounded-md font-medium text-white hover:bg-primary-700 dark:hover:bg-primary-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-600 dark:ring-offset-black"
+                    type="submit"
+                  >
+                    Sign up
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        <div className="title">
-          <Link
-            className="text-3xl md:text-6xl font-bold text-gray-800 hover:text-gray-600"
-            href={`/posts/${id}`}
-          >
-            {title || "Unknown"}
-          </Link>
-        </div>
-        <p className="text-gray-500 py-3">{description || "description"}</p>
-        {author ? <Author {...author}></Author> : <></>}
       </div>
     </div>
   );

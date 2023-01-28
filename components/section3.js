@@ -1,76 +1,76 @@
-import Image from "next/image";
+import posts from "@/data/posts";
+import siteMetadata from "@/data/siteMetadata";
 import Link from "next/link";
-import { Swiper, SwiperSlide } from "swiper/react";
-import fetcher from "../lib/fetcher";
-import Author from "./_child/author";
-import Error from "./_child/error";
-import Spinner from "./_child/spinner";
+import Tag from "./Tag";
+
+const MAX_DISPLAY = 5;
 
 export default function section3() {
-  const { data, isLoading, isError } = fetcher("api/popular");
-
-  if (isLoading) return <Spinner></Spinner>;
-  if (isError) return <Error></Error>;
-
   return (
-    <section className="container mx-auto md:px-20 py-16">
-      <h1 className="font-bold text-4xl py-12 text-center">Most Popular</h1>
-
-      {/* swiper */}
-      <Swiper
-        breakpoints={{
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 30,
-          },
-        }}
-      >
-        {data.map((value, index) => (
-          <SwiperSlide key={index}>
-            <Post data={value}></Post>
-          </SwiperSlide>
+    <div className="divide-y divide-gray-200 dark:divide-gray-700">
+      <div className="space-y-2 pt-6 pb-8 md:space-y-5">
+        <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+          Most Popular
+        </h1>
+        <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
+          {siteMetadata.description}
+        </p>
+      </div>
+      <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+        {!posts.length && "No posts found."}
+        {posts.slice(0, MAX_DISPLAY).map((frontMatter, index) => (
+          <Post key={index} frontMatter={frontMatter}></Post>
         ))}
-      </Swiper>
-    </section>
+      </ul>
+    </div>
   );
 }
 
-function Post({ data }) {
-  const { id, title, category, img, description, published, author } = data;
-
+function Post({ frontMatter }) {
+  const { id, slug, date, title, summary, tags } = frontMatter;
   return (
-    <div className="grid">
-      <div className="images">
-        <Link href={`/posts/${id}`}>
-          <Image src={img || ""} width={600} height={400} alt="post image" />
-        </Link>
-      </div>
-      <div className="info flex justify-center flex-col py-4">
-        <div className="cat">
-          <Link
-            className="text-orange-600 hover:text-orange-800"
-            href={`/posts/${id}`}
-          >
-            {category || "No Category"}
-          </Link>
-          <Link
-            className="text-gray-800 hover:text-gray-600"
-            href={`/posts/${id}`}
-          >
-            - {published || ""}
-          </Link>
+    <li key={id} className="py-12">
+      <article>
+        <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
+          <dl>
+            <dt className="sr-only">Published on</dt>
+            <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+              <time dateTime={date}>{date}</time>
+            </dd>
+          </dl>
+          <div className="space-y-5 xl:col-span-3">
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold leading-8 tracking-tight">
+                  <Link
+                    href={`/blog/${slug}`}
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    {title}
+                  </Link>
+                </h2>
+                <div className="flex flex-wrap">
+                  {tags.map((tag) => (
+                    <Tag key={tag} text={tag} />
+                  ))}
+                </div>
+              </div>
+              <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                {summary}
+              </div>
+            </div>
+            <div className="text-base font-medium leading-6">
+              <Link
+                href={`/blog/${slug}`}
+                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                aria-label={`Read "${title}"`}
+              >
+                Read more &rarr;
+              </Link>
+            </div>
+          </div>
         </div>
-        <div className="title">
-          <Link
-            className="text-3xl md:text-4xl font-bold text-gray-800 hover:text-gray-600"
-            href={`/posts/${id}`}
-          >
-            {title || "No Title"}
-          </Link>
-        </div>
-        <p className="text-gray-500 py-3">{description || "No Description"}</p>
-        {author ? <Author {...author}></Author> : <></>}
-      </div>
-    </div>
+      </article>
+    </li>
   );
 }

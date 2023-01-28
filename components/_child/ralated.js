@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import fetcher from "../../lib/fetcher";
-import Author from "./author";
 import Error from "./error";
 import Spinner from "./spinner";
 
@@ -63,7 +62,6 @@ function Post({ data }) {
             {title || "No Title"}
           </Link>
         </div>
-        {author ? <Author {...author}></Author> : <></>}
       </div>
     </div>
   );

@@ -1,36 +1,29 @@
+import siteMetadata from "@/data/siteMetadata";
 import Link from "next/link";
-import { ImFacebook, ImTwitter, ImYoutube } from "react-icons/im";
-import Newslatter from "./_child/newslatter";
+import { icons } from "./social-icons/icons";
 
 export default function footer() {
-  const bg = {
-    backgroundImage: "url('/images/footer.png')",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "bottom left",
-  };
-
   return (
-    <footer className="bg-gray-50" style={bg}>
-      <Newslatter></Newslatter>
-      <div className="container mx-auto flex justify-center py-12">
-        <div className="py-5">
-          <div className="flex gap-6 justify-center">
-            <Link href={"/"}>
-              <ImFacebook color="#888888" />
-            </Link>
-            <Link href={"/"}>
-              <ImTwitter color="#888888" />
-            </Link>
-            <Link href={"/"}>
-              <ImYoutube color="#888888" />
-            </Link>
-          </div>
-
-          <p className="py-5 text-gray-400">
-            Copyright ©2022 All rights reserved | This template is made with by
-            Daily Tuition
-          </p>
-          <p className="text-gray-400 text-center">Terms & Condition</p>
+    <footer>
+      <div className="mt-16 flex flex-col items-center">
+        <div className="mb-3 flex space-x-4">
+          <span>{icons.facebook}</span>
+          <span>{icons.github}</span>
+          <span>{icons.linkedin}</span>
+          <span>{icons.mail}</span>
+          <span>{icons.twitter}</span>
+        </div>
+        <div className="mb-2 flex space-x-2 text-sm text-gray-500 dark:text-gray-400">
+          <div>{siteMetadata.author}</div>
+          <div>{` • `}</div>
+          <div>{`© ${new Date().getFullYear()}`}</div>
+          <div>{` • `}</div>
+          <Link href="/">{siteMetadata.title}</Link>
+        </div>
+        <div className="mb-8 text-sm text-gray-500 dark:text-gray-400">
+          <Link href="https://github.com/timlrx/tailwind-nextjs-starter-blog">
+            Tailwind Nextjs Theme
+          </Link>
         </div>
       </div>
     </footer>

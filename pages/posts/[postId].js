@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { SWRConfig } from "swr";
-import Author from "../../components/_child/author";
 import ErrorComponent from "../../components/_child/error";
 import Ralated from "../../components/_child/ralated";
 import Spinner from "../../components/_child/spinner";
@@ -25,11 +24,7 @@ export default function Page({ fallback }) {
 
 function Article({ title, img, subtitle, description, author }) {
   return (
-    <section className="container mx-auto md:px-2 py-16 w-1/2">
-      <div className="flex justify-center">
-        {author ? <Author {...author}></Author> : <></>}
-      </div>
-
+    <section className="container mx-auto md:px-2  ">
       <div className="post py-10">
         <h1 className="font-bold text-4xl text-center pb-5">
           {title || "No Title"}
@@ -44,7 +39,7 @@ function Article({ title, img, subtitle, description, author }) {
             src={img || "/"}
             width={900}
             height={600}
-            alt="Article image"
+            alt="blog image"
           ></Image>
         </div>
 
